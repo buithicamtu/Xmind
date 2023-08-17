@@ -64,11 +64,15 @@ public class Topic {
         return children;
     }
 
-    // Add children to topic with title
-    public Topic createChildren(String title) {
-        var topic = new Topic(title);
+    // Add children to topic
+    // public Topic addChildren(String title) {
+    //     var topic = new Topic(title);
+    //     children.add(topic);
+    //     return topic;
+    // }
+
+    public void addChild(Topic topic) {
         children.add(topic);
-        return topic;
     }
 
     // Reorder subtopic in same topic
@@ -85,15 +89,23 @@ public class Topic {
 
     }
 
-    public void deleteChild(Topic Child) {
+    public void removeChild(Topic Child) {
         this.children = filterElement(Child, this.children);
     }
 
     public void moveFromTopicToTargetTopic(Topic parentTopic, Topic targetTopic) {
         if (parentTopic != null && targetTopic != null) {
             targetTopic.children.add(this);
-            parentTopic.deleteChild(this);
+            parentTopic.removeChild(this);
         }
     }
 
+    // Move Topic to Floating topic
+    public void moveTopicToFloatingTopic(CentralTopic centralTopic) {
+        centralTopic.removeChild(this);
+        Topic newFloatingTopic = this;
+        centralTopic.addFloatingChildren(newFloatingTopic);
+    }
+
+  
 }

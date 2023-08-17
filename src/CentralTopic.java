@@ -6,32 +6,31 @@ import java.util.stream.Collectors;
 public class CentralTopic extends Topic {
     public CentralTopic(String title) {
         super(title);
-        floatingChildren = new ArrayList<FloatingTopic>();
+        floatingChildren = new ArrayList<Topic>();
         listRelationship = new ArrayList<Relationship>();
     }
 
-    private List<FloatingTopic> floatingChildren;
+    private List<Topic> floatingChildren;
     private List<Relationship> listRelationship;
 
     public List<Relationship> getlistRelationship() {
         return listRelationship;
     }
 
-    public List<FloatingTopic> getFloatingChildren() {
+    public List<Topic> getFloatingChildren() {
         return floatingChildren;
     }
 
     // Add floating topic to central topic
-    public Topic createFloatingTopic(String title) {
-        FloatingTopic floatingTopic = new FloatingTopic(title); // object for class FloatingTopic
-        floatingChildren.add(floatingTopic); // ArrayList add object
-        return floatingTopic;
-    }
+    // public Topic createFloatingTopic(String title) {
+    // Topic floatingTopic = new Topic(title); // object for class FloatingTopic
+    // floatingChildren.add(floatingTopic); // ArrayList add object
+    // return floatingTopic;
+    // }
 
-    // Move Topic to Floating topic
-    public void moveToFloatingTopic(Topic topicToMove, CentralTopic centralTopic) {
-        centralTopic.createFloatingTopic(topicToMove.getTitle());
-        this.deleteChild(topicToMove);
+    // Add children to floating topic
+    public void addFloatingChildren(Topic topic) {
+        floatingChildren.add(topic);
     }
 
     // Add relationship between 2 topic
@@ -59,6 +58,12 @@ public class CentralTopic extends Topic {
         }
     }
 
-    // Remove Multiple Selected Topic
+    public void removeFloatChild(Topic Child) {
+        this.floatingChildren = filterElement(Child, this.floatingChildren);
+    }
+    public void moveFloatingTopicToTopic(Topic floatingTopicToMove,Topic newParentTopic) {
+        this.removeFloatChild(floatingTopicToMove);
+        newParentTopic.addChild(floatingTopicToMove);
+    }
 
 }
