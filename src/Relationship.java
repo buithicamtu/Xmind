@@ -2,33 +2,33 @@ import java.util.Random;
 import java.util.UUID;
 
 public class Relationship {
-    private UUID id;
+    private String id;
 
-    public UUID getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(UUID id) {
+    public void setId(String id) {
         this.id = id;
     }
 
-    private UUID headId;
+    private String headId;
 
-    public UUID getHeadId() {
+    public String getHeadId() {
         return headId;
     }
 
-    public void setHeadId(UUID headId) {
+    public void setHeadId(String headId) {
         this.headId = headId;
     }
 
-    private UUID tailId;
+    private String tailId;
 
-    public UUID getTailId() {
+    public String getTailId() {
         return tailId;
     }
 
-    public void setTailId(UUID tailId) {
+    public void setTailId(String tailId) {
         this.tailId = tailId;
     }
 
@@ -42,10 +42,10 @@ public class Relationship {
         this.title = title;
     }
 
-    public Relationship(UUID headId, UUID tailId) {
-        id = UUID.randomUUID();
+    public Relationship(String headId, String tailId) {
+        id = UUID.randomUUID().toString();
         this.headId = headId;
         this.tailId = tailId;
     }
-    
+
 }

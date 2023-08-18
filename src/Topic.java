@@ -6,19 +6,19 @@ import java.util.stream.Collectors;
 
 public class Topic {
 
-    private UUID id;
+    private String id;
 
-    public UUID getId() {
+    public String getId() {
         return id;
     }
 
-    private String title;
-
     public Topic(String title) {
-        this.id = UUID.randomUUID();
+        this.id = UUID.randomUUID().toString();
         this.title = title;
         this.children = new ArrayList<Topic>();
     }
+
+    private String title;
 
     public String getTitle() {
         return title;
@@ -64,15 +64,21 @@ public class Topic {
         return children;
     }
 
-    // Add children to topic
-    // public Topic addChildren(String title) {
-    //     var topic = new Topic(title);
-    //     children.add(topic);
-    //     return topic;
-    // }
+    // add children to Topic
+    public void addChild(Topic ...topics) {
+        for (var topic : topics) {
+            children.add(topic);
+        }
+    }
 
-    public void addChild(Topic topic) {
-        children.add(topic);
+    public Topic getTopicByID(String topicID) {
+        for (var item : this.getChildren()) {
+            if (item.getId() == topicID) {
+                return item;
+            }
+            item.getTopicByID(topicID);
+        }
+        return null;
     }
 
     // Reorder subtopic in same topic
@@ -82,30 +88,39 @@ public class Topic {
     }
 
     // Move Children from topic 1 to Topic 2
-    public static List<Topic> filterElement(Topic element, List<Topic> childrenlist) {
-        return childrenlist.stream()
-                .filter(item -> item != element)
-                .collect(Collectors.toList());
+    // public static List<Topic> filterElement(Topic element, List<Topic>
+    // childrenlist) {
+    // return childrenlist.stream()
+    // .filter(item -> item.getId() != element)
+    // .collect(Collectors.toList());
 
-    }
+    // }
 
-    public void removeChild(Topic Child) {
-        this.children = filterElement(Child, this.children);
+    // public void removeChild(Topic Child) {
+    // this.children = filterElement(Child, this.children);
+    // }
+
+    public void  removeChildByID(String... childsID) {
+        for (var element : childsID) {
+            List<Topic> filteredTopic = children.stream().filter(item -> item.getId() != element)
+                    .collect(Collectors.toList());
+
+            this.children = filteredTopic;
+        }
     }
 
     public void moveFromTopicToTargetTopic(Topic parentTopic, Topic targetTopic) {
         if (parentTopic != null && targetTopic != null) {
             targetTopic.children.add(this);
-            parentTopic.removeChild(this);
+            parentTopic.removeChildByID(this.getId());
         }
     }
 
     // Move Topic to Floating topic
     public void moveTopicToFloatingTopic(CentralTopic centralTopic) {
-        centralTopic.removeChild(this);
         Topic newFloatingTopic = this;
         centralTopic.addFloatingChildren(newFloatingTopic);
+        centralTopic.removeChildByID(this.getId());
     }
 
-  
 }

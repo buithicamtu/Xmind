@@ -143,55 +143,88 @@ public class test {
         assertEquals(1, centralTopic.getFloatingChildren().size());
     }
 
-    @Test
-    // Move topic 1 to children of topic 2
+    // Move topic 1 to Children of topic 2
+     @Test
     public void moveTopic1ToChildOfTopic2() {
+        var centralTopic = new CentralTopic("Central Topic");
         var topic1 = new Topic("Main Topic 1");
         var topic2 = new Topic("Main Topic 2");
+        var child1 = new Topic("Children 1");
+        var child2 = new Topic("Children 2");
+        var child3 = new Topic("Children 3");
 
-        var child1 = topic1.addChildren("Children 1");
-        var child2 = topic1.addChildren("Children 2");
-        var child3 = topic2.addChildren("Children 3");
-        var child4 = topic2.addChildren("Children 4");
+        centralTopic.addChild(topic1);
+        centralTopic.addChild(topic2);
+        topic1.addChild(child1);
+        topic2.addChild(child2);
+        topic2.addChild(child3);
 
-        topic2.AddtoTopic(topic1, topic2);
-        assertEquals(3, topic2.getChildren().size());
-        assertEquals(2, topic1.getChildren().size());
+        topic1.moveFromTopicToTargetTopic(centralTopic, child3);
+        assertEquals(1, centralTopic.getChildren().size());
+        assertEquals(2, topic2.getChildren().size());
+        assertEquals(1, child3.getChildren().size());
+        assertEquals(1, topic1.getChildren().size());
+
     }
 
     // Move children to Central Topic
     @Test
     public void MoveChildrenToCentral() {
         var centralTopic = new CentralTopic("Central Topic");
-        var topic1 = centralTopic.addChildren("Main Topic 1");
-        var child1 = topic1.addChildren("Sub topic 1");
+        var topic1 = new Topic("Main Topic 1");
+        var topic2 = new Topic("Main Topic 2");
+        var child1 = new Topic("Children 1");
+        var child2 = new Topic("Children 2");
+        var child3 = new Topic("Children 3");
 
-        centralTopic.AddtoTopic(child1, centralTopic);
-        assertEquals(2, centralTopic.getChildren().size());
+        centralTopic.addChild(topic1);
+        centralTopic.addChild(topic2);
+        topic1.addChild(child1);
+        topic2.addChild(child2);
+        topic2.addChild(child3);
+
+        child3.moveFromTopicToTargetTopic(topic2, centralTopic);
+        assertEquals(3, centralTopic.getChildren().size());
+        assertEquals(1, topic2.getChildren().size());
     }
 
     // Remove 1 children from 1 topic
     @Test
     public void RemoveChildreninSameTopic() {
+        var centralTopic = new CentralTopic("Central Topic");
         var topic1 = new Topic("Main Topic 1");
+        var topic2 = new Topic("Main Topic 2");
+        var child1 = new Topic("Children 1");
+        var child2 = new Topic("Children 2");
+        var child3 = new Topic("Children 3");
 
-        var child1 = topic1.addChildren("Children 1");
-        var child2 = topic1.addChildren("Children 2");
-        var child3 = topic1.addChildren("Children 3");
+        centralTopic.addChild(topic1);
+        centralTopic.addChild(topic2);
+        topic1.addChild(child1);
+        topic2.addChild(child2);
+        topic2.addChild(child3);
 
-        topic1.deleteChild(child1);
-        assertEquals(2, topic1.getChildren().size());
+        topic2.removeChild(child2);
+        assertEquals(1, topic2.getChildren().size());
     }
 
     // Remove 1 topic from central topic
     @Test
     public void RemoveTopicFromCentral() {
         var centralTopic = new CentralTopic("Central Topic");
-        var topic1 = centralTopic.addChildren("Main Topic 1");
-        var topic2 = centralTopic.addChildren("Main Topic 2");
-        var child1 = topic1.addChildren("Sub topic 1");
+        var topic1 = new Topic("Main Topic 1");
+        var topic2 = new Topic("Main Topic 2");
+        var child1 = new Topic("Children 1");
+        var child2 = new Topic("Children 2");
+        var child3 = new Topic("Children 3");
 
-        centralTopic.deleteChild(topic1);
+        centralTopic.addChild(topic1);
+        centralTopic.addChild(topic2);
+        topic1.addChild(child1);
+        topic2.addChild(child2);
+        topic2.addChild(child3);
+
+        centralTopic.removeChild(topic1);
         assertEquals(0, centralTopic.getChildren().get(0).getChildren().size()); // test children in topic 1
         assertEquals(1, centralTopic.getChildren().size()); // test topic
     }
@@ -199,10 +232,18 @@ public class test {
     // Test add relationship
     @Test
     public void addRelationshipOfTopic12() {
-        var centralTopic = new CentralTopic("Central Topic");
-        var topic1 = centralTopic.addChildren("Main Topic 1");
-        var topic2 = centralTopic.addChildren("Main Topic 2");
-        var child1 = topic1.addChildren("Sub topic 1");
+       var centralTopic = new CentralTopic("Central Topic");
+        var topic1 = new Topic("Main Topic 1");
+        var topic2 = new Topic("Main Topic 2");
+        var child1 = new Topic("Children 1");
+        var child2 = new Topic("Children 2");
+        var child3 = new Topic("Children 3");
+
+        centralTopic.addChild(topic1);
+        centralTopic.addChild(topic2);
+        topic1.addChild(child1);
+        topic2.addChild(child2);
+        topic2.addChild(child3);
 
         centralTopic.addRelationship(topic2.getId(), child1.getId());
 
@@ -212,11 +253,18 @@ public class test {
     // Test edit relationship of ID1 & ID2 --> ID1 & ID3
     @Test
     public void editRelationshipID() {
-        var centralTopic = new CentralTopic("Central Topic");
-        var topic1 = centralTopic.addChildren("Main Topic 1");
-        var topic2 = centralTopic.addChildren("Main Topic 2");
-        var child1 = topic1.addChildren("Sub topic 1");
+       var centralTopic = new CentralTopic("Central Topic");
+        var topic1 = new Topic("Main Topic 1");
+        var topic2 = new Topic("Main Topic 2");
+        var child1 = new Topic("Children 1");
+        var child2 = new Topic("Children 2");
+        var child3 = new Topic("Children 3");
 
+        centralTopic.addChild(topic1);
+        centralTopic.addChild(topic2);
+        topic1.addChild(child1);
+        topic2.addChild(child2);
+        topic2.addChild(child3);
         centralTopic.addRelationship(topic2.getId(), child1.getId());
         // Before editing
         assertEquals(topic2.getId(), centralTopic.getlistRelationship().get(0).getHeadId());
@@ -232,9 +280,17 @@ public class test {
     @Test
     public void removeRelationshipID() {
         var centralTopic = new CentralTopic("Central Topic");
-        var topic1 = centralTopic.addChildren("Main Topic 1");
-        var topic2 = centralTopic.addChildren("Main Topic 2");
-        var child1 = topic1.addChildren("Sub topic 1");
+        var topic1 = new Topic("Main Topic 1");
+        var topic2 = new Topic("Main Topic 2");
+        var child1 = new Topic("Children 1");
+        var child2 = new Topic("Children 2");
+        var child3 = new Topic("Children 3");
+
+        centralTopic.addChild(topic1);
+        centralTopic.addChild(topic2);
+        topic1.addChild(child1);
+        topic2.addChild(child2);
+        topic2.addChild(child3);
 
         centralTopic.addRelationship(topic2.getId(), child1.getId());
         centralTopic.addRelationship(topic1.getId(), topic2.getId());
