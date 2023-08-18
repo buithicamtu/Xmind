@@ -130,14 +130,14 @@ public class test {
 
         centralTopic.addChild(Topic1);
         centralTopic.addFloatingChildren(floatingtopic1, floatingtopic2);
-        
+
         centralTopic.moveFloatingTopicToTopic(floatingtopic1.getId(), centralTopic);
         assertEquals(2, centralTopic.getChildren().size());
         assertEquals(1, centralTopic.getFloatingChildren().size());
     }
 
     // Move topic 1 to Children of topic 2
-     @Test
+    @Test
     public void moveTopic1ToChildOfTopic2() {
         var centralTopic = new CentralTopic("Central Topic");
         var topic1 = new Topic("Main Topic 1");
@@ -217,7 +217,7 @@ public class test {
     // Test add relationship
     @Test
     public void addRelationshipOfTopic12() {
-       var centralTopic = new CentralTopic("Central Topic");
+        var centralTopic = new CentralTopic("Central Topic");
         var topic1 = new Topic("Main Topic 1");
         var topic2 = new Topic("Main Topic 2");
         var child1 = new Topic("Children 1");
@@ -236,7 +236,7 @@ public class test {
     // Test edit relationship of ID1 & ID2 --> ID1 & ID3
     @Test
     public void editRelationshipID() {
-       var centralTopic = new CentralTopic("Central Topic");
+        var centralTopic = new CentralTopic("Central Topic");
         var topic1 = new Topic("Main Topic 1");
         var topic2 = new Topic("Main Topic 2");
         var child1 = new Topic("Children 1");
@@ -276,11 +276,10 @@ public class test {
 
         assertEquals(2, centralTopic.getlistRelationship().size());
         // Remove relationship
-        centralTopic.removeRelationshipByID(centralTopic.getlistRelationship().get(1));
+        centralTopic.removeRelationshipByID(centralTopic.getlistRelationship().get(1).getId());
 
         // After remove
         assertEquals(1, centralTopic.getlistRelationship().size());
     }
-   
-}
 
+}

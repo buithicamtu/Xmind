@@ -50,6 +50,21 @@ public class CentralTopic extends Topic {
         this.listRelationship.add(new Relationship(id1, id2));
     }
 
+    //Add new relationship without topic
+    public void addRelationshipWithoutTopic(){
+        var floatingTopic1 = new Topic("Floating Topic");
+        var floatingTopic2 = new Topic("Floating Topic");
+        this.addFloatingChildren(floatingTopic1,floatingTopic2);
+        addRelationship(floatingTopic1.getId(), floatingTopic2.getId());
+    }
+
+    //Add relationship for 1 topic 
+     public void addRelationshipForOneTopic(String id1){
+        var floatingTopic1 = new Topic("Floating Topic");
+        this.addFloatingChildren(floatingTopic1);
+        addRelationship(floatingTopic1.getId(), id1);
+    }
+
     // Edit relationship
     public void editRelationship(Relationship relationshipToMove, Topic headTopic, Topic tailTopic) {
         relationshipToMove.setHeadId(headTopic.getId());
@@ -57,12 +72,21 @@ public class CentralTopic extends Topic {
     }
 
     // Remove relationship
-    public void removeRelationshipByID(Relationship... relationshipToMove) {
-        for (var element : relationshipToMove) {
-            List<Relationship> filteredTopic = listRelationship.stream().filter(item -> item != element)
+    public void removeRelationshipByID(String... relationshipIdToMove) {
+        for (var element : relationshipIdToMove) {
+            List<Relationship> filteredTopic = listRelationship.stream().filter(item -> item.getId() != element)
                     .collect(Collectors.toList());
             this.listRelationship = filteredTopic;
         }
+    }
+
+    public Relationship getRelationshipByID(Relationship RelationshipId) {
+        for (var item : this.getlistRelationship()) {
+            if (item.getId() == RelationshipId.getId()) {
+                return item;
+            }
+        }
+        return null;
     }
 
     // move Floating Topic --> Topic

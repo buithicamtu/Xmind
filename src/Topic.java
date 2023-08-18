@@ -65,7 +65,7 @@ public class Topic {
     }
 
     // add children to Topic
-    public void addChild(Topic ...topics) {
+    public void addChild(Topic... topics) {
         for (var topic : topics) {
             children.add(topic);
         }
@@ -100,7 +100,7 @@ public class Topic {
     // this.children = filterElement(Child, this.children);
     // }
 
-    public void  removeChildByID(String... childsID) {
+    public void removeChildByID(String... childsID) {
         for (var element : childsID) {
             List<Topic> filteredTopic = children.stream().filter(item -> item.getId() != element)
                     .collect(Collectors.toList());
@@ -123,4 +123,24 @@ public class Topic {
         centralTopic.removeChildByID(this.getId());
     }
 
+    // Delete multiple nodes 
+    public void Traversal(List<String> TopicsIdRemoved) {
+        for (var item : this.getChildren()) {
+            if (TopicsIdRemoved.contains(item.getId())) {
+                this.removeChildByID(item.getId());
+                TopicsIdRemoved.remove(item.getId());
+            }
+            item.Traversal(TopicsIdRemoved);
+        }
+    }
+    public void deleteTopicId(String ... topicsID){
+        List<String> TopicsIdRemoved = new ArrayList<>();
+        for(var item : this.children){
+            if(TopicsIdRemoved.contains(item.getId())){
+                this.removeChildByID(item.getId());
+                TopicsIdRemoved.remove(item.getId());
+            }
+            item.Traversal(TopicsIdRemoved);
+        }
+    }
 }
