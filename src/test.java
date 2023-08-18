@@ -281,7 +281,6 @@ public class test {
         // After remove
         assertEquals(1, centralTopic.getlistRelationship().size());
     }
-
    
 }
 
