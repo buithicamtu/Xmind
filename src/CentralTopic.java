@@ -29,8 +29,10 @@ public class CentralTopic extends Topic {
     // }
 
     // Add children to floating topic
-    public void addFloatingChildren(Topic topic) {
-        floatingChildren.add(topic);
+    public void addFloatingChildren(Topic... floatingChilds) {
+        for (var floatingChild : floatingChilds) {
+            floatingChildren.add(floatingChild);
+        }
     }
 
     public Topic getFloatingTopicByID(String floatingTopicID) {
@@ -55,19 +57,6 @@ public class CentralTopic extends Topic {
     }
 
     // Remove relationship
-    // public static List<Relationship> removeRelationshipByID(Relationship element,
-    // List<Relationship> list) {
-    // return list.stream()
-    // .filter(item -> item != element)
-    // .collect(Collectors.toList());
-
-    // }
-
-    // public void deleteRelationship(Relationship... relationshipToMove) {
-    // for (var item : relationshipToMove) {
-    // this.listRelationship = removeRelationship(item, this.listRelationship);
-    // }
-    // }
     public void removeRelationshipByID(Relationship... relationshipToMove) {
         for (var element : relationshipToMove) {
             List<Relationship> filteredTopic = listRelationship.stream().filter(item -> item != element)
@@ -89,7 +78,7 @@ public class CentralTopic extends Topic {
     public void moveFloatingTopicToTopic(String floatingTopicIdToMove, Topic newParentTopic) {
         Topic floatingTopicSelected = getFloatingTopicByID(floatingTopicIdToMove);
         newParentTopic.addChild(floatingTopicSelected);
-        this.removeFloatingChildsByID( floatingTopicIdToMove);
+        this.removeFloatingChildsByID(floatingTopicIdToMove);
     }
 
 }
